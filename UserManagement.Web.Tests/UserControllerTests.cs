@@ -1,11 +1,8 @@
-using UserManagement.Models;
-using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
-using UserManagement.WebMS.Controllers;
 
-namespace UserManagement.Data.Tests;
+namespace UserManagement.Web.Tests;
 
-public class UserControllerTests
+public class UserControllerTests : TestsBase
 {
     [Fact]
     public void List_WhenServiceReturnsUsers_ModelMustContainUsers()
@@ -23,26 +20,32 @@ public class UserControllerTests
             .Which.Items.Should().BeEquivalentTo(users);
     }
 
-    private User[] SetupUsers(string forename = "Johnny", string surname = "User", string email = "juser@example.com", bool isActive = true)
+    [Fact]
+    public void Should_ReturnActiveUsersOnly_When_IsActiveServiceUsed()
     {
-        var users = new[]
-        {
-            new User
-            {
-                Forename = forename,
-                Surname = surname,
-                Email = email,
-                IsActive = isActive
-            }
-        };
+        // Arrange: Initializes objects and sets the value of the data that is passed to the method under test.
+        var controller = CreateController();
+        SetupMultipleUsers();
 
-        _userService
-            .Setup(s => s.GetAll())
-            .Returns(users);
+        // Act: Invokes the method under test with the arranged parameters.
+        var result = controller.List(true);
 
-        return users;
+        // Assert: Verifies that the action of the method under test behaves as expected.
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().OnlyContain(x => x.IsActive);
     }
 
-    private readonly Mock<IUserService> _userService = new();
-    private UsersController CreateController() => new(_userService.Object);
+    [Fact]
+    public void Should_ReturnNonActiveUsersOnly_When_NonActiveServiceUsed()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var result = controller.List(false);
+
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().OnlyContain(x => !x.IsActive);
+    }
 }
