@@ -48,4 +48,30 @@ public class UserControllerTests : TestsBase
             .Should().BeOfType<UserListViewModel>()
             .Which.Items.Should().OnlyContain(x => !x.IsActive);
     }
+
+    [Fact]
+    public void Should_NotHaveDateOfBirthAsNullOrEmpty_When_GettingAll()
+    {
+        var controller = CreateController();
+        SetupUsers();
+
+        var result = controller.List();
+
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().OnlyContain(x => !string.IsNullOrEmpty(x.DateOfBirth));
+    }
+
+    [Fact]
+    public void Should_NotHaveDateOfBirthAsNullOrEmpty_When_CallingFilteredList()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var result = controller.List(false);
+
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().OnlyContain(x => !string.IsNullOrEmpty(x.DateOfBirth));
+    }
 }
