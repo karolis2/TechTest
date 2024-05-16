@@ -1,3 +1,4 @@
+using System;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.Web.Tests;
@@ -59,7 +60,7 @@ public class UserControllerTests : TestsBase
 
         result.Model
             .Should().BeOfType<UserListViewModel>()
-            .Which.Items.Should().OnlyContain(x => !string.IsNullOrEmpty(x.DateOfBirth));
+            .Which.Items.Should().OnlyContain(x => x.DateOfBirth == new DateTime(2012, 12, 25, 10, 30, 50, DateTimeKind.Utc));
     }
 
     [Fact]
@@ -72,6 +73,6 @@ public class UserControllerTests : TestsBase
 
         result.Model
             .Should().BeOfType<UserListViewModel>()
-            .Which.Items.Should().OnlyContain(x => !string.IsNullOrEmpty(x.DateOfBirth));
+            .Which.Items.Should().OnlyContain(x => x.DateOfBirth == new DateTime(2012, 12, 25, 10, 30, 50, DateTimeKind.Utc));
     }
 }

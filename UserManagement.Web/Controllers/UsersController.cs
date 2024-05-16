@@ -20,7 +20,7 @@ public class UsersController : Controller
             Surname = p.Surname,
             Email = p.Email,
             IsActive = p.IsActive,
-            DateOfBirth = p.DateOfBirth.ToShortDateString()
+            DateOfBirth = p.DateOfBirth
         });
 
         var model = new UserListViewModel
@@ -43,7 +43,7 @@ public class UsersController : Controller
             Surname = p.Surname,
             Email = p.Email,
             IsActive = p.IsActive,
-            DateOfBirth = p.DateOfBirth.ToShortDateString()
+            DateOfBirth = p.DateOfBirth
         });
 
         var model = new UserListViewModel
