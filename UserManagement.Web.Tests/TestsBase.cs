@@ -67,6 +67,15 @@ public class TestsBase
                 userEntity.DateOfBirth = s.DateOfBirth;
             });
 
+        _userService
+            .Setup(s => s.DeleteUser(It.IsAny<long>()))
+            .Callback<long>(s =>
+            {
+                var userEntity = users.Single(x => x.Id == s);
+
+                users.Remove(userEntity);
+            });
+
         return users;
     }
     protected User[] UsersData()

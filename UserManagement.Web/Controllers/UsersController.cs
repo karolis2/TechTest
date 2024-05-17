@@ -94,7 +94,7 @@ public class UsersController : Controller
         return View();
     }
 
-    [HttpGet("edit")]
+    [HttpPut("edit")]
     public IActionResult Edit(int id)
     {
         //TODO: validate
@@ -113,7 +113,7 @@ public class UsersController : Controller
         return View(itemViewModel);
     }
 
-    [HttpPost("edit")]
+    [HttpPut("edit")]
     [ValidateAntiForgeryToken]
     public IActionResult Edit([Bind("Id,Forename,Surname,Email,IsActive,DateOfBirth")] UserListItemViewModel userViewModel)
     {
@@ -162,6 +162,31 @@ public class UsersController : Controller
     {
         //TODO: Check if not found.
 
+        var user = _userService.GetUser(id);
+
+        var itemViewModel = new UserListItemViewModel
+        {
+            Id = user.Id,
+            Forename = user.Forename,
+            Surname = user.Surname,
+            Email = user.Email,
+            IsActive = user.IsActive,
+            DateOfBirth = user.DateOfBirth
+        };
+
+        return View(itemViewModel);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteConfirmed(int id)
+    {
+        _userService.DeleteUser(id);
+        return RedirectToAction(nameof(List));
+    }
+
+    public IActionResult Delete(int id)
+    {
         var user = _userService.GetUser(id);
 
         var itemViewModel = new UserListItemViewModel

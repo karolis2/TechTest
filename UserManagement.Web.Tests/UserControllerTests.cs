@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using UserManagement.Models;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.Web.Tests;
@@ -130,7 +131,6 @@ public class UserControllerTests : TestsBase
         };
 
         controller.Edit(newUser);
-
         var result = controller.Edit(1);
 
         result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Forename.Should().Be(newUser.Forename);
@@ -149,5 +149,19 @@ public class UserControllerTests : TestsBase
         var result = controller.UserDetails(1);
 
         result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Id.Should().Be(1);
+    }
+
+    [Fact]
+    public void Should_RemoveUserFromTheDb_When_WhenIdProvidedForDeleteService()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        controller.Delete(1);
+        var result = controller.List();
+
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().NotContain(x => x.Id == 1);
     }
 }

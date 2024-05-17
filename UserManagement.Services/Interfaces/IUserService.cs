@@ -20,4 +20,5 @@ public interface IUserService
 
     //TODO: test
     public bool CheckIfUserExists(long id);
+    public void DeleteUser(long id);
 }

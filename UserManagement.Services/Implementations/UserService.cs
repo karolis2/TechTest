@@ -45,4 +45,13 @@ public class UserService : IUserService
 
         return all.Any(x => x.Id == id);
     }
+
+    public void DeleteUser(long id)
+    {
+        var all = _dataAccess.GetAll<User>();
+
+        var userToDelete = all.Single(x => x.Id == id);
+
+        _dataAccess.Delete(userToDelete);
+    }
 }
