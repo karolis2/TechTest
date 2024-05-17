@@ -103,7 +103,7 @@ public class UserControllerTests : TestsBase
     }
 
     [Fact]
-    public void Should_GetUserFromTheDb_When_WhenIdProvided()
+    public void Should_GetUserFromTheDb_When_WhenIdProvidedForEditingService()
     {
         var controller = CreateController();
         SetupMultipleUsers();
@@ -138,5 +138,16 @@ public class UserControllerTests : TestsBase
         result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Email.Should().Be(newUser.Email);
         result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.IsActive.Should().Be(newUser.IsActive);
         result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.DateOfBirth.Should().Be(newUser.DateOfBirth);
+    }
+
+    [Fact]
+    public void Should_GetUserFromTheDb_When_WhenIdProvidedForUserDetailsService()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var result = controller.UserDetails(1);
+
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Id.Should().Be(1);
     }
 }
