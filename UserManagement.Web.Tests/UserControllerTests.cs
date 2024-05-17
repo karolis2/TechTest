@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Mvc;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.Web.Tests;
@@ -77,7 +78,7 @@ public class UserControllerTests : TestsBase
     }
 
     [Fact]
-    public void Should_AddUserToTHeDB_When_CreatingNewUser()
+    public void Should_AddUserToTheDd_When_CreatingNewUser()
     {
         var controller = CreateController();
         SetupMultipleUsers();
@@ -99,5 +100,43 @@ public class UserControllerTests : TestsBase
         result.Model
             .Should().BeOfType<UserListViewModel>()
             .Which.Items.Should().Contain(x => x.DateOfBirth == newUser.DateOfBirth);
+    }
+
+    [Fact]
+    public void Should_GetUserFromTheDb_When_WhenIdProvided()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var result = controller.Edit(1);
+
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Id.Should().Be(1);
+    }
+
+    [Fact]
+    public void Should_ChangeUserDetails_When_CallingEditService()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var newUser = new UserListItemViewModel
+        {
+            Id = 1,
+            Forename = "John",
+            Surname = "Johnson",
+            Email = "jj@example.com",
+            IsActive = true,
+            DateOfBirth = new DateTime(2012, 11, 25, 10, 30, 50, DateTimeKind.Utc)
+        };
+
+        controller.Edit(newUser);
+
+        var result = controller.Edit(1);
+
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Forename.Should().Be(newUser.Forename);
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Surname.Should().Be(newUser.Surname);
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.Email.Should().Be(newUser.Email);
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.IsActive.Should().Be(newUser.IsActive);
+        result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<UserListItemViewModel>().Which.DateOfBirth.Should().Be(newUser.DateOfBirth);
     }
 }

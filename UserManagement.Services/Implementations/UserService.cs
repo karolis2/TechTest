@@ -27,4 +27,22 @@ public class UserService : IUserService
 
     public void CreateUser(User user) => _dataAccess.Create(user);
 
+    public User GetUser(long id)
+    {
+        var all = _dataAccess.GetAll<User>();
+
+        return all.Single(x => x.Id == id);
+    }
+
+    public void UpdateUser(User user)
+    {
+        _dataAccess.Update(user);
+    }
+    //TODO: UT
+    public bool CheckIfUserExists(long id)
+    {
+        var all = _dataAccess.GetAll<User>();
+
+        return all.Any(x => x.Id == id);
+    }
 }

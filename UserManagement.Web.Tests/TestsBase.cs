@@ -32,6 +32,7 @@ public class TestsBase
 
     protected IEnumerable<User> SetupMultipleUsers()
     {
+        //TODO: maybe not the best practice to shove everything here, but for it feels comfortable.
         var users = UsersData().ToList();
 
         _userService
@@ -50,9 +51,24 @@ public class TestsBase
             .Setup(s => s.CreateUser(It.IsAny<User>()))
             .Callback<User>(s => users.Add(s));
 
+        _userService
+            .Setup(s => s.GetUser(1))
+            .Returns(users.Single(x => x.Id == 1 ));
+
+        _userService
+            .Setup(s => s.UpdateUser(It.IsAny<User>()))
+            .Callback<User>(s =>
+            {
+                var userEntity = users.Single(x => x.Id == s.Id);
+                userEntity.Forename = s.Forename;
+                userEntity.Surname = s.Surname;
+                userEntity.Email = s.Email;
+                userEntity.IsActive = s.IsActive;
+                userEntity.DateOfBirth = s.DateOfBirth;
+            });
+
         return users;
     }
-
     protected User[] UsersData()
     {
         return

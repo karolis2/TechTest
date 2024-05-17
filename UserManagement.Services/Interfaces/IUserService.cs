@@ -13,4 +13,11 @@ public interface IUserService
     IEnumerable<User> FilterByActive(bool isActive);
     IEnumerable<User> GetAll();
     void CreateUser(User user);
+    User GetUser(long id);
+
+    //TODO: test
+    public void UpdateUser(User user);
+
+    //TODO: test
+    public bool CheckIfUserExists(long id);
 }

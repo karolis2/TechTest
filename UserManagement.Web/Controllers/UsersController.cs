@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 using UserManagement.Services.Interfaces;
 using UserManagement.Web.Models.Users;
@@ -68,6 +69,7 @@ public class UsersController : Controller
     {
         if (ModelState.IsValid)
         {
+            //TODO: test
             if (userViewModel.DateOfBirth >= DateTime.Today)
             {
                 ModelState.AddModelError(string.Empty, "Date of birthday can't be higher than today.");
@@ -90,5 +92,67 @@ public class UsersController : Controller
         }
 
         return View();
+    }
+
+    public IActionResult Edit(int id)
+    {
+        //TODO: validate
+        var user = _userService.GetUser(id);
+
+        var itemViewModel = new UserListItemViewModel
+        {
+            Id = user.Id,
+            Forename = user.Forename,
+            Surname = user.Surname,
+            Email = user.Email,
+            IsActive = user.IsActive,
+            DateOfBirth = user.DateOfBirth
+        };
+
+        return View(itemViewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit([Bind("Id,Forename,Surname,Email,IsActive,DateOfBirth")] UserListItemViewModel userViewModel)
+    {
+        var user = new User
+        {
+            Id = userViewModel.Id,
+            Forename = userViewModel.Forename!,
+            Surname = userViewModel.Surname!,
+            Email = userViewModel.Email!,
+            IsActive = userViewModel.IsActive,
+            DateOfBirth = userViewModel.DateOfBirth
+        };
+
+        if (ModelState.IsValid)
+        {
+            //TODO: DRY
+            if (userViewModel.DateOfBirth >= DateTime.Today)
+            {
+                ModelState.AddModelError(string.Empty, "Date of birthday can't be higher than today.");
+                return View();
+            }
+            try
+            {
+                _userService.UpdateUser(user);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var userExists = _userService.CheckIfUserExists(user.Id);
+
+                if (!userExists)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(List));
+        }
+        return View(userViewModel);
     }
 }
