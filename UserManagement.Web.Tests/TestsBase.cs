@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Models;
 using UserManagement.Services.Interfaces;
@@ -29,9 +30,13 @@ public class TestsBase
         return users;
     }
 
-    protected User[] SetupMultipleUsers()
+    protected IEnumerable<User> SetupMultipleUsers()
     {
-        var users = UsersData();
+        var users = UsersData().ToList();
+
+        _userService
+            .Setup(s => s.GetAll())
+            .Returns(users);
 
         _userService
             .Setup(s => s.FilterByActive(true))
@@ -40,6 +45,10 @@ public class TestsBase
         _userService
             .Setup(s => s.FilterByActive(false))
             .Returns(users.Where(x => !x.IsActive));
+
+        _userService
+            .Setup(s => s.CreateUser(It.IsAny<User>()))
+            .Callback<User>(s => users.Add(s));
 
         return users;
     }

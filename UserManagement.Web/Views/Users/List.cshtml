@@ -7,7 +7,6 @@
     <div class="btn-group" role="group">
 
         @* TODO: all of it could be under begin form. *@
-        <a asp-controller="Users" asp-action="List" class="btn btn-default">Show All</a>
         @using (Html.BeginForm("List", "Users", FormMethod.Post, new
                 {
                     enctype = "multipart/form-data"
@@ -18,10 +17,7 @@
         }
 
     </div>
-
-    <a href="#" class="btn btn-primary float-end">
-        Add User
-    </a>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
 </div>
 
 
@@ -59,7 +55,7 @@
                         @(item.IsActive ? "Yes" : "No")
                     </td>
                     <td>
-                        @(item.DateOfBirth.Date)
+                        @(item.DateOfBirth.ToShortDateString())
                     </td>
                     <td>
                         <div class="dropdown">

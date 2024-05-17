@@ -75,4 +75,29 @@ public class UserControllerTests : TestsBase
             .Should().BeOfType<UserListViewModel>()
             .Which.Items.Should().OnlyContain(x => x.DateOfBirth == new DateTime(2012, 12, 25, 10, 30, 50, DateTimeKind.Utc));
     }
+
+    [Fact]
+    public void Should_AddUserToTHeDB_When_CreatingNewUser()
+    {
+        var controller = CreateController();
+        SetupMultipleUsers();
+
+        var newUser = new UserListItemViewModel()
+        {
+            Id = 1,
+            Forename = "John",
+            Surname = "Johnson",
+            Email = "jj@example.com",
+            IsActive = true,
+            DateOfBirth = new DateTime(2012, 11, 25, 10, 30, 50, DateTimeKind.Utc)
+        };
+
+        controller.Create(newUser);
+
+        var result = controller.List();
+
+        result.Model
+            .Should().BeOfType<UserListViewModel>()
+            .Which.Items.Should().Contain(x => x.DateOfBirth == newUser.DateOfBirth);
+    }
 }
