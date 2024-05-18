@@ -94,7 +94,7 @@ public class UsersController : Controller
         return View();
     }
 
-    [HttpPut("edit")]
+    [HttpGet("edit")]
     public IActionResult Edit(int id)
     {
         //TODO: validate
@@ -113,7 +113,7 @@ public class UsersController : Controller
         return View(itemViewModel);
     }
 
-    [HttpPut("edit")]
+    [HttpPost("edit")]
     [ValidateAntiForgeryToken]
     public IActionResult Edit([Bind("Id,Forename,Surname,Email,IsActive,DateOfBirth")] UserListItemViewModel userViewModel)
     {
