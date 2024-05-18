@@ -246,3 +246,9 @@ ModelManifest.xml
 
 # Inflo Custom Ignores
 **/*.js.map
+
+# Local db
+*.datasource
+*.db
+*.db-wal
+*.db-shm
