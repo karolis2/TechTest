@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UserManagement.Data;
+using UserManagement.Data.Audit;
 using UserManagement.Models;
 using UserManagement.Services.Interfaces;
 
@@ -53,5 +54,14 @@ public class UserService : IUserService
         var userToDelete = all.Single(x => x.Id == id);
 
         _dataAccess.Delete(userToDelete);
+    }
+
+    public IEnumerable<Audit> GetUserLogs(long id)
+    {
+        var logs = _dataAccess.GetAll<Audit>();
+
+        var userLogs = logs.Where(log => log.ModifiedUserId == id);
+
+        return userLogs;
     }
 }

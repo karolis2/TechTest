@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using UserManagement.Models;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.Web.Tests;

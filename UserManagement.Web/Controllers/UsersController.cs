@@ -163,7 +163,6 @@ public class UsersController : Controller
         //TODO: Check if not found.
 
         var user = _userService.GetUser(id);
-
         var itemViewModel = new UserListItemViewModel
         {
             Id = user.Id,

@@ -14,4 +14,5 @@ public class Audit
     public string? NewValues { get; set; }
     public string? AffectedColumns { get; set; }
     public string? PrimaryKey { get; set; }
+    public long ModifiedUserId { get; set; }
 }
