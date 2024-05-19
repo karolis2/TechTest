@@ -7,4 +7,5 @@ public interface IAuditLogsService
 {
     public IEnumerable<Audit> GetAll();
     public IEnumerable<Audit> GetUserLogs(long id);
+    public Audit GetSingleLogBy(int id);
 }

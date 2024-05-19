@@ -83,7 +83,6 @@ public class DataContext : DbContext, IDataContext
                     continue;
                 }
 
-
                 switch (entry.State)
                 {
                     case EntityState.Added:

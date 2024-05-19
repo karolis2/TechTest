@@ -23,4 +23,14 @@ public class AuditLogsService : IAuditLogsService
 
         return userLogs;
     }
+
+    //TOOO: Test
+    public Audit GetSingleLogBy(int id)
+    {
+        var logs = _dataAccess.GetAll<Audit>();
+
+        var singleLogById = logs.Single(log => log.Id == id);
+
+        return singleLogById;
+    }
 }

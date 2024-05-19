@@ -9,7 +9,6 @@ namespace UserManagement.Web.Controllers
         private readonly IAuditLogsService _auditLogsService;
         public AuditsController(IAuditLogsService auditLogsService) => _auditLogsService = auditLogsService;
 
-        // GET: Audits
         public ViewResult Index()
         {
             var logs = _auditLogsService.GetAll();
@@ -33,6 +32,26 @@ namespace UserManagement.Web.Controllers
             };
 
             return View(model);
+        }
+
+        public ViewResult Details(int id)
+        {
+            var log = _auditLogsService.GetSingleLogBy(id);
+
+            var logItemVm = new UserLogItemViewModel
+            {
+                AffectedColumns = log.AffectedColumns,
+                DateTime = log.DateTime,
+                Id = log.Id,
+                ModifiedUserId = log.ModifiedUserId,
+                NewValues = log.NewValues,
+                OldValues = log.OldValues,
+                PrimaryKey = log.PrimaryKey,
+                TableName = log.TableName,
+                Type = log.Type
+            };
+
+            return View(logItemVm);
         }
     }
 }
