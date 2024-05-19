@@ -200,4 +200,10 @@ public class UsersController : Controller
 
         return View(itemViewModel);
     }
+
+    [HttpGet("logs")]
+    public IActionResult OpenLogs()
+    {
+        return RedirectToAction("Index", "Audits");
+    }
 }
