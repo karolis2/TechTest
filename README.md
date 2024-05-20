@@ -75,3 +75,11 @@ for the login username and pwd would have to be checked on the DB and details wo
 
 * Please feel free to change or refactor any code that has been supplied within the solution and think about clean maintainable code and architecture when extending the project.
 * If any additional packages, tools or setup are required to run your completed version, please document these thoroughly.
+
+## Conclusion
+
+* Nice exercise to practice, I haven't used razor pages for some time so it was very interesting to practice again, but I think I spent too much time there so I have no time for the interesting stuff.
+* If was to do task like that again maybe, I could have just gone for api straight away, but having the template I chose to just build on top.
+* Recently I was mainly using Fakeiteasy library, so had to get comfortable with Moq, could have just used  the one I am comfortable with, but wanted to pacrtice something new.
+* There are many unit test still missing but I just implemented as it is just exercise.
+* Having more time I would also try to go through the code and edit the variable and function namings and tidy up in general, as it is a bit sloppy at the moment.
