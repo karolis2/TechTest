@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 using UserManagement.Services.Interfaces;
+using UserManagement.Web.Models.AuditLogs;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.WebMS.Controllers;
@@ -11,7 +12,13 @@ namespace UserManagement.WebMS.Controllers;
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService) => _userService = userService;
+    private readonly IAuditLogsService _auditLogService;
+
+    public UsersController(IUserService userService, IAuditLogsService auditLogService)
+    {
+        _userService = userService;
+        _auditLogService = auditLogService;
+    }
 
     [HttpGet("users/")]
     public ViewResult List()
@@ -162,6 +169,8 @@ public class UsersController : Controller
     {
         //TODO: Check if not found.
 
+        var logsViewModel = GetUserAuditLogs();
+
         var user = _userService.GetUser(id);
         var itemViewModel = new UserListItemViewModel
         {
@@ -170,10 +179,32 @@ public class UsersController : Controller
             Surname = user.Surname,
             Email = user.Email,
             IsActive = user.IsActive,
-            DateOfBirth = user.DateOfBirth
+            DateOfBirth = user.DateOfBirth,
+            LogItems = logsViewModel
         };
 
         return View(itemViewModel);
+    }
+
+    private UserLogListViewModel GetUserAuditLogs()
+    {
+        var logs = _auditLogService.GetAll();
+
+        var logItemVm = logs.Select(x => new UserLogItemViewModel
+        {
+            AffectedColumns = x.AffectedColumns,
+            DateTime = x.DateTime,
+            Id = x.Id,
+            ModifiedUserId = x.ModifiedUserId,
+            NewValues = x.NewValues,
+            OldValues = x.OldValues,
+            PrimaryKey = x.PrimaryKey,
+            TableName = x.TableName,
+            Type = x.Type
+        });
+
+        var logsViewModel = new UserLogListViewModel { Items = logItemVm.ToList() };
+        return logsViewModel;
     }
 
     [HttpPost, ActionName("Delete")]
@@ -195,9 +226,8 @@ public class UsersController : Controller
             Surname = user.Surname,
             Email = user.Email,
             IsActive = user.IsActive,
-            DateOfBirth = user.DateOfBirth
+            DateOfBirth = user.DateOfBirth,
         };
-
         return View(itemViewModel);
     }
 
@@ -205,5 +235,30 @@ public class UsersController : Controller
     public IActionResult OpenLogs()
     {
         return RedirectToAction("Index", "Audits");
+    }
+
+    public ActionResult LogsView()
+    {
+        var logs = _auditLogService.GetAll();
+
+        var logItemVm = logs.Select(x => new UserLogItemViewModel
+        {
+            AffectedColumns = x.AffectedColumns,
+            DateTime = x.DateTime,
+            Id = x.Id,
+            ModifiedUserId = x.ModifiedUserId,
+            NewValues = x.NewValues,
+            OldValues = x.OldValues,
+            PrimaryKey = x.PrimaryKey,
+            TableName = x.TableName,
+            Type = x.Type
+        });
+
+        var model = new UserLogListViewModel
+        {
+            Items = logItemVm.ToList()
+        };
+
+        return View(model);
     }
 }
