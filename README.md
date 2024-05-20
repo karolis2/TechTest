@@ -1,3 +1,6 @@
+## How to run
+* **Pull the project and run update-database on the PM console. Which will create SQLITE db locally.**
+
 # User Management Technical Exercise
 
 The exercise is an ASP.NET Core web application backed by Entity Framework Core, which faciliates management of some fictional users.
@@ -11,15 +14,20 @@ Complete as many of the tasks below as you can. These are split into 3 levels of
 * **Advanced** - Slightly more technical tasks and problem solving
 * **Expert** - Tasks with a higher level of problem solving and architecture needed
 
+
 ### 1. Filters Section (Standard)
 
 The users page contains 3 buttons below the user listing - **Show All**, **Active Only** and **Non Active**. Show All has already been implemented. Implement the remaining buttons using the following logic:
 * Active Only – This should show only users where their `IsActive` property is set to `true`
 * Non Active – This should show only users where their `IsActive` property is set to `false`
 
+**COMMENT: Just used 2 buttons and each of them passes true or false and makes a query where user IsActive or not.**
+
 ### 2. User Model Properties (Standard)
 
 Add a new property to the `User` class in the system called `DateOfBirth` which is to be used and displayed in relevant sections of the app.
+
+**COMMENT: Simple Date added and desplayed.**
 
 ### 3. Actions Section (Standard)
 
@@ -28,8 +36,10 @@ Create the code and UI flows for the following actions
 * **View** - A screen that displays the information about a user
 * **Edit** – A screen that allows you to edit a selected user from the list  
 * **Delete** – A screen that allows you to delete a selected user from the list
-
 Each of these screens should contain appropriate data validation, which is communicated to the end user.
+
+
+**COMMENT: Simple crud added, I did do it the hard way by creating the each view for the actions, but if I had to do it from scratch, I would have just created controller and let VS generate views for me. Also added some basic validation through the tags and date of birth cannot be later than today. Also tried to add some unit test but did not develop tests for the whole project as it's just an exercise. Also after adding first users, the dropdown is difficult to see, so probably need to fix table size to a minimum size.**
 
 ### 4. Data Logging (Advanced)
 
@@ -38,6 +48,9 @@ Extend the system to capture log information regarding primary actions performed
 * There should be a new **Logs** page, containing a list of log entries across the application.
 * In the Logs page, the user should be able to click into each entry to see more detail about it.
 * In the Logs page, think about how you can provide a good user experience - even when there are many log entries.
+
+**COMMENT: Here I implemented a BeforeSaveChanges and AfterSaveChanges methods where I used ChangeTracker.DetectChanges(); to track the changes and create audit logs. AfterSaveChanges was needed to create correct logs on user creation as onSave we do not have saved ID. 
+Also added a simple partial view which is used fo all of the logs page and for the UserDetailsvView. If I had more time, I would implement Pagination as it should help with the UX. Also did not add any UT for this due to personal time constraints, but would have to test the creation and retrieving of the logs.**
 
 ### 5. Extend the Application (Expert)
 
@@ -49,6 +62,9 @@ Some ideas are:
 * Implement authentication and login based on the users being stored.
 * Implement bundling of static assets.
 * Update the data access layer to use a real database, and implement database schema migrations.
+
+**COMMENT: Here I only added SQLite and migrations to use the db. But I spent to much time with CRUD. But for data layer I would async awayt and async functions.
+for the login username and pwd would have to be checked on the DB and details would have to stay in the session, so we could use for the audit logs. Also as data layer is kept in the services, api would just be accessing the them.**
 
 ## Additional Notes
 
