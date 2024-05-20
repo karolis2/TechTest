@@ -4,56 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Type
-            </th>
-            <th>
-                Table Name
-            </th>
-            <th>
-                Date
-
-            </th>
-            <th>
-                Primary Key
-            </th>
-            <th>
-                Actions
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Items) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TableName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PrimaryKey)
-        </td>
-        <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            </td>
-    </tr>
-}
-    </tbody>
-</table>
-<div>Pagination goes here</div>
+<p>
+    <dd class="col-sm-10">
+        <partial name="LogsView" model="Model" /> 
+    </dd>
+</p>

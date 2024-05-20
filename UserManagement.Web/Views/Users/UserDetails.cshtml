@@ -47,6 +47,11 @@
         </dd>
     </dl>
 </div>
+<p>
+    <dd class="col-sm-10">
+        <partial name="LogsView" model="Model.LogItems" /> 
+    </dd>
+</p>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="List">Back to List</a>

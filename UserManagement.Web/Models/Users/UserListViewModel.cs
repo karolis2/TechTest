@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using UserManagement.Web.Models.AuditLogs;
 
 namespace UserManagement.Web.Models.Users;
 
@@ -23,4 +24,5 @@ public class UserListItemViewModel
     public bool IsActive { get; set; }
     [Required]
     public DateTime DateOfBirth { get; set; }
+    public UserLogListViewModel LogItems { get; set; } = new();
 }
