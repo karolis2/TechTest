@@ -1,5 +1,10 @@
 ## How to run
-* **Pull the project and run update-database on the PM console. Which will create SQLITE db locally.**
+* **1. Clone the the project.**
+* **2. Open Package Manager console, change directory to UserManagement.Data with "cd UserManagement.Data".**
+* **3. Run "dotnet ef database update" and SQLITE db will be created locall if it's not yet created.**
+* **4. Change starup project to UserManagement.Web.**
+* **5. Hit F5 an all the controls will be there as it was orginaly.**
+* 
 
 # User Management Technical Exercise
 
